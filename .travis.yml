@@ -6,3 +6,6 @@ services:
 script:
   - cp .env.dist .env
   - XDEBUG=1 docker-compose build
+  - docker-compose up -d elastic
+  - sleep 30 # wait until elastic boots up
+  - docker/console curl -f elastic:9200

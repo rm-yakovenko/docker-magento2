@@ -18,6 +18,14 @@ services:
         environment:
             - "PMA_HOST=db"
 
+    elastic:
+        image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
+        volumes:
+            - esdata:/usr/share/elasticsearch/data
+        environment:
+            - "discovery.type=single-node"
+            - "xpack.security.enabled=false"
+
     app:
         build:
             context: ./docker/app
@@ -27,6 +35,7 @@ services:
         user: $CONTAINER_USER
         links:
             - db
+            - elastic
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - ./docker/app/app.ini:/usr/local/etc/php/conf.d/app.ini:ro
@@ -43,3 +52,7 @@ services:
           - ./docker/web/app.conf:/etc/nginx/conf.d/app.conf:ro
         volumes_from:
             - app
+
+volumes:
+    esdata:
+        driver: local
