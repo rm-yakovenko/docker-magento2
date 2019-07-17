@@ -1,0 +1,8 @@
+sudo: required
+
+services:
+  - docker
+
+script:
+  - cp .env.dist .env
+  - XDEBUG=1 docker-compose build
