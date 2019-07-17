@@ -8,6 +8,16 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
 
+
+    pma:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db
+        ports:
+            - $LISTEN_PMA:80
+        environment:
+            - "PMA_HOST=db"
+
     app:
         build:
             context: ./docker/app
